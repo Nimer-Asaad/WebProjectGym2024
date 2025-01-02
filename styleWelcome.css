@@ -193,12 +193,12 @@
 .services {
     background: var(--snd-bg-color);
   }
-/*
+  
   .heading {
     text-align: center;
     font-size: 6.5rem;
   }  
-  */
+  
   .services-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, auto));
