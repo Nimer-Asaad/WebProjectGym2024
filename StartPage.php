@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: login_signup.html");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +15,7 @@
    <title>Workout Plans</title>
    <link rel="stylesheet" href="styleStart.css">
    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  
 </head>
 <body>
    <!-- Header Section -->
@@ -28,6 +38,12 @@
             <a href="#" class="header-link">
                <i class='bx bxs-cog'></i>
                <span>Settings</span>
+            </a>
+         </li>
+         <li>
+            <a href="logout.php" class="header-link">
+               <i class='bx bx-log-out'></i>
+               <span>Logout</span>
             </a>
          </li>
       </ul>
