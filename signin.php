@@ -5,13 +5,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $conn = new mysqli("localhost", "root", "", "login");
+    // الاتصال بقاعدة البيانات
+    $conn = new mysqli("localhost", "root", "", "users"); // اسم قاعدة البيانات هو "users" كما هو ظاهر في الصورة
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT * FROM login WHERE UserName = ?";
+    // الاستعلام لجلب المستخدم بناءً على اسم المستخدم
+    $sql = "SELECT * FROM gymuser WHERE username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -20,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
 
-        if ($password === $row['Password']) { // مقارنة الكلمة مباشرة
+        // التحقق من كلمة المرور
+        if ($password === $row['pass']) { // مقارنة كلمة المرور
             $_SESSION['username'] = $username;
             echo "<script>
                     alert('Login successful!');

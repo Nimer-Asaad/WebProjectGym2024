@@ -1,0 +1,29 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* البداية مخفية */
+    width: 300px;
+    height: 100%;
+    background-color: #000; /* اللون الأسود */
+    color: #0fd6b6; /* النص الأخضر */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar.active {
+    right: 0; /* إظهار الشريط الجانبي */
+}
+
+.close-btn {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #0fd6b6; /* النص الأخضر */
+}

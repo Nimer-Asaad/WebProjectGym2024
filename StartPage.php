@@ -1,8 +1,28 @@
 <?php
 session_start();
+include 'db.php'; // الاتصال بقاعدة البيانات
 
 if (!isset($_SESSION['username'])) {
     header("Location: login_signup.html");
+    exit();
+}
+
+$username = $_SESSION['username'];
+
+// جلب بيانات المستخدم
+$sql = "SELECT * FROM gymuser WHERE username = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+} else {
+    echo "<script>
+            alert('User not found!');
+            window.location.href = 'login_signup.html';
+          </script>";
     exit();
 }
 ?>
@@ -10,12 +30,12 @@ if (!isset($_SESSION['username'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Workout Plans</title>
-   <link rel="stylesheet" href="styleStart.css">
-   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Plans</title>
+    <link rel="stylesheet" href="styleStart.css"> <!-- ملف CSS الرئيسي -->
+    <link rel="stylesheet" href="sidebar.css"> <!-- ملف CSS للشريط الجانبي -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
    <!-- Header Section -->
@@ -35,9 +55,9 @@ if (!isset($_SESSION['username'])) {
             </a>
          </li>
          <li>
-            <a href="#" class="header-link">
+            <a href="#" class="header-link" id="settings-btn">
                <i class='bx bxs-cog'></i>
-               <span>Settings</span>
+               <span>Profile</span>
             </a>
          </li>
          <li>
@@ -48,32 +68,28 @@ if (!isset($_SESSION['username'])) {
          </li>
       </ul>
    </header>
+  <!-- Welcome Section -->
+<div class="welcome-section">
+    <h2>Welcome, <span><?php echo htmlspecialchars($user['username']); ?></span>!</h2>
+    <p>We're excited to have you back. Let's achieve your fitness goals together!</p>
+</div>
 
-   <!-- Profile Section -->
-   <div class="profile">
-      <img src="assets/profile.jpg" alt="Profile Picture" class="profile-pic">
-      <div class="profile-info">
-         <h2>Abo Zuhdi</h2>
-         <p>Last sync: Yesterday</p>
-      </div>
-      <button class="sync-btn">
-         <i class="bx bx-refresh"></i> Sync
-      </button>
+
+
+   <!-- Sidebar Section -->
+   <div class="sidebar" id="sidebar">
+      <button class="close-btn" id="close-btn">&times;</button>
+      <h2>Your Profile</h2>
+      <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username']); ?></p>
+      <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
+      <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+      <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone_number']); ?></p>
    </div>
 
-   <!-- Premium Section -->
-   <section class="premium">
-      <button class="btn premium-btn">Go Premium</button>
-   </section>
-
-   
+   <!-- Workouts Section -->
    <section class="workouts" id="workouts">
-    
-    <!-- Beginner Section -->
-    <br>
-    <hr>
-    <br>
-    <h2 class="heading" data-aos="zoom-in">Beginner <span>Workouts</span></h2>
+    <!-- Beginner Workouts -->
+    <h2 class="heading">Beginner <span>Workouts</span></h2>
     <div class="workout-content">
         <div class="row">
             <img src="assets/ABS.jpg" alt="ABS Beginner">
@@ -96,7 +112,7 @@ if (!isset($_SESSION['username'])) {
             <p>26 mins · 23 exercises</p>
         </div>
         <div class="row">
-            <img src="assets/SHOILDER & BACK.jpg" alt="Shoulder & Back Beginner">
+            <img src="assets/SHOULDER_BACK.jpg" alt="Shoulder & Back Beginner">
             <h4>Shoulder & Back Beginner</h4>
             <p>17 mins · 17 exercises</p>
         </div>
@@ -106,13 +122,9 @@ if (!isset($_SESSION['username'])) {
             <p>30 mins · 5 exercises</p>
         </div>
     </div>
-     
-    <br>
-    <hr>
-    <br>
 
-    <!-- Intermediate Section -->
-    <h2 class="heading" data-aos="zoom-in">Intermediate <span>Workouts</span></h2>
+    <!-- Intermediate Workouts -->
+    <h2 class="heading">Intermediate <span>Workouts</span></h2>
     <div class="workout-content">
         <div class="row">
             <img src="assets/ABS.jpg" alt="ABS Intermediate">
@@ -135,7 +147,7 @@ if (!isset($_SESSION['username'])) {
             <p>41 mins · 36 exercises</p>
         </div>
         <div class="row">
-            <img src="assets/SHOILDER & BACK.jpg" alt="Shoulder & Back Intermediate">
+            <img src="assets/SHOULDER_BACK.jpg" alt="Shoulder & Back Intermediate">
             <h4>Shoulder & Back Intermediate</h4>
             <p>19 mins · 17 exercises</p>
         </div>
@@ -146,12 +158,8 @@ if (!isset($_SESSION['username'])) {
         </div>
     </div>
 
-    <!-- Advanced Section -->
-     <br>
-     <hr>
-     <br>
-
-    <h2 class="heading" data-aos="zoom-in">Advanced <span>Workouts</span></h2>
+    <!-- Advanced Workouts -->
+    <h2 class="heading">Advanced <span>Workouts</span></h2>
     <div class="workout-content">
         <div class="row">
             <img src="assets/ABS.jpg" alt="ABS Advanced">
@@ -174,7 +182,7 @@ if (!isset($_SESSION['username'])) {
             <p>53 mins · 43 exercises</p>
         </div>
         <div class="row">
-            <img src="assets/SHOILDER & BACK.jpg" alt="Shoulder & Back Advanced">
+            <img src="assets/SHOULDER_BACK.jpg" alt="Shoulder & Back Advanced">
             <h4>Shoulder & Back Advanced</h4>
             <p>19 mins · 17 exercises</p>
         </div>
@@ -187,18 +195,25 @@ if (!isset($_SESSION['username'])) {
 </section>
 
 
-   <!-- Footer Section -->
+   <script>
+      const settingsBtn = document.getElementById('settings-btn'); // زر Settings (Profile)
+      const sidebar = document.getElementById('sidebar'); // الشريط الجانبي
+      const closeBtn = document.getElementById('close-btn'); // زر الإغلاق داخل الشريط الجانبي
 
-   <footer class="footer">
-    <div class="social">
-        <a href="#"><i class='bx bxl-instagram-alt'></i></a>
-        <a href="#"><i class='bx bxl-facebook-square'></i></a>
-        <a href="#"><i class='bx bxl-linkedin-square'></i></a>
-    </div>
+      // إظهار الشريط الجانبي عند النقر على زر Settings (Profile)
+      if (settingsBtn) {
+          settingsBtn.addEventListener('click', (event) => {
+              event.preventDefault(); // منع السلوك الافتراضي للرابط
+              sidebar.classList.add('active');
+          });
+      }
 
-    <p class="copyright">
-        &copy; Tiger Gym 2024/2025 - All Rights Reserved
-    </p>
-</footer>
+      // إخفاء الشريط الجانبي عند النقر على زر الإغلاق
+      if (closeBtn) {
+          closeBtn.addEventListener('click', () => {
+              sidebar.classList.remove('active');
+          });
+      }
+   </script>
 </body>
 </html>
