@@ -1,11 +1,11 @@
 .sidebar {
     position: fixed;
     top: 0;
-    right: -300px; /* البداية مخفية */
+    right: -300px;
     width: 300px;
     height: 100%;
-    background-color: #000; /* اللون الأسود */
-    color: #0fd6b6; /* النص الأخضر */
+    background-color: #000;
+    color: #0fd6b6;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     transition: right 0.3s ease-in-out;
     z-index: 1000;
@@ -16,7 +16,7 @@
 }
 
 .sidebar.active {
-    right: 0; /* إظهار الشريط الجانبي */
+    right: 0;
 }
 
 .close-btn {
@@ -25,5 +25,48 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
-    color: #0fd6b6; /* النص الأخضر */
+    color: #0fd6b6;
+}
+
+form#update-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form#update-form label {
+    font-size: 14px;
+    color: #fff;
+}
+
+form#update-form input {
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+}
+
+form#update-form .update-btn {
+    background-color: #0fd6b6;
+    color: #000;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+form#update-form .update-btn:hover {
+    background-color: #0bc0a4;
+}
+
+
+form#update-form select {
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
 }
